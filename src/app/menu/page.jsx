@@ -1,14 +1,9 @@
-import dynamic from "next/dynamic";
-const Scene = dynamic(() => import("@/components/threejs/Scene"), {
-  ssr: false,
-});
+import MenuPage from "@/components/menuPage/MenuPage";
 
 const Menu = () => {
   return (
     <>
-      <div className="w-[100dvw] h-[100dvh] fixed top-0 overflow-hidden left-0 ">
-        <Scene />
-      </div>
+      <MenuPage />
     </>
   );
 };

@@ -1,12 +1,18 @@
 import { FaTrashAlt } from "react-icons/fa";
-import { PRODUCTS } from "@/lib/helpers/contants"; // Make sure the path is correct
 import toast, { Toaster } from "react-hot-toast";
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useEffect } from "react";
-import { addOrder } from "@/lib/action";
+import { addOrder } from "@/lib/action"; // Ensure this is the correct path for your action
+import { PRODUCTS } from "@/lib/helpers/contants"; // Ensure correct path for your products
 
-const Cart = ({ cart, addToCart, removeFromCart, deleteFromCart, userId }) => {
-  const [state, FormState] = useFormState(addOrder, null);
+const Basket = ({
+  cart,
+  addToCart,
+  removeFromCart,
+  deleteFromCart,
+  userId,
+}) => {
+  const [state, FormState] = useFormState(addOrder, null); // Tracks form state
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   // Calculate total price and prepare product details
@@ -30,16 +36,14 @@ const Cart = ({ cart, addToCart, removeFromCart, deleteFromCart, userId }) => {
   const handlePaymentMethodChange = (e) => {
     setPaymentMethod(e.target.value);
   };
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
+
   useEffect(() => {
     if (state?.success) {
       setButtonDisabled(true);
       const redirectTimer = setTimeout(() => {
         toast.success("Thank you!");
         location.reload();
-      }, 3000); // 3000 milliseconds = 3 seconds
+      }, 3000); // 3 seconds delay
 
       return () => clearTimeout(redirectTimer);
     }
@@ -66,7 +70,7 @@ const Cart = ({ cart, addToCart, removeFromCart, deleteFromCart, userId }) => {
   return (
     <>
       <div className="absolute top-10 right-0 md:right-10 lg:right-20 bg-white text-black p-6 rounded-lg shadow-lg z-50 w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4 text-center ">Cart</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Cart</h2>
         <ul className="space-y-4">
           {Object.keys(cart).length === 0 ? (
             <li className="text-center text-gray-500">Your cart is empty</li>
@@ -93,7 +97,7 @@ const Cart = ({ cart, addToCart, removeFromCart, deleteFromCart, userId }) => {
                       -
                     </button>
                     <button
-                      className=" text-black py-1 px-2 rounded hover:scale-150 ease-in-out transition duration-500  f "
+                      className=" text-black py-1 px-2 rounded hover:scale-150 ease-in-out transition duration-500"
                       onClick={() => deleteFromCart(item)}
                     >
                       <FaTrashAlt className="h-5 w-5" />
@@ -102,10 +106,10 @@ const Cart = ({ cart, addToCart, removeFromCart, deleteFromCart, userId }) => {
                 </div>
                 <div className=" my-2  flex flex-col justify-center ">
                   <div className="text-sm font-medium text-gray-700">
-                    Price: ${productDetails[item]?.price.toFixed(2)}
+                    Price: ${productDetails[item]?.price?.toFixed(2)}
                   </div>
                   <div className="text-sm font-medium text-gray-700">
-                    Total: ${productDetails[item]?.total.toFixed(2)}
+                    Total: ${productDetails[item]?.total?.toFixed(2)}
                   </div>
                 </div>
               </li>
@@ -160,8 +164,9 @@ const Cart = ({ cart, addToCart, removeFromCart, deleteFromCart, userId }) => {
           </form>
         )}
       </div>
+      <Toaster />
     </>
   );
 };
 
-export default Cart;
+export default Basket;

@@ -6,8 +6,8 @@ import { Toaster } from "react-hot-toast";
 const quicksand = Quicksand({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "3D Menu POS",
-  description: "3D point of sale system for exlusive resturants",
+  title: "shopping-secret",
+  description: "Iraq, Kirkuk wholesaler for retail",
 };
 
 export default function RootLayout({ children }) {
