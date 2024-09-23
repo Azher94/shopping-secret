@@ -26,12 +26,6 @@ const Hero = () => {
           </div>
           <div className=" space-x-5 p-4 mt-5">
             <Link
-              href="/#about"
-              className=" bg-primary btn-outline btn-circle btn-ghost p-3"
-            >
-              About Us
-            </Link>
-            <Link
               href="/menu"
               className="btn-square bg-secondary btn-circle btn-ghost p-3"
             >

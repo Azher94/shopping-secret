@@ -1,16 +1,17 @@
 import { FaTrashAlt } from "react-icons/fa";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useFormState, useFormStatus } from "react-dom";
 import { useState, useEffect } from "react";
 import { addOrder } from "@/lib/action"; // Ensure this is the correct path for your action
-import { PRODUCTS } from "@/lib/helpers/contants"; // Ensure correct path for your products
 
 const Basket = ({
   cart,
   addToCart,
   removeFromCart,
   deleteFromCart,
-  userId,
+  username,
+  userID,
+  PRODUCTS,
 }) => {
   const [state, FormState] = useFormState(addOrder, null); // Tracks form state
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -38,16 +39,16 @@ const Basket = ({
   };
 
   useEffect(() => {
-    if (state?.success) {
+    if (state) {
       setButtonDisabled(true);
+      toast.success("Thank you!");
       const redirectTimer = setTimeout(() => {
-        toast.success("Thank you!");
-        location.reload();
-      }, 3000); // 3 seconds delay
+        window.location.reload();
+      }, 1000);
 
       return () => clearTimeout(redirectTimer);
     }
-  }, [state?.success]);
+  }, [state]);
 
   function Submit() {
     const status = useFormStatus();
@@ -149,7 +150,8 @@ const Basket = ({
                 <option value="Card">Card</option>
               </select>
             </div>
-            <input type="hidden" name="userId" value={userId} />
+            <input type="hidden" name="userId" value={userID} />
+            <input type="hidden" name="username" value={username} />
             <input type="hidden" name="totalAmount" value={totalPrice} />
             <input type="hidden" name="products" value={JSON.stringify(cart)} />
             <Submit />
@@ -164,7 +166,6 @@ const Basket = ({
           </form>
         )}
       </div>
-      <Toaster />
     </>
   );
 };

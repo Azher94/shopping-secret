@@ -1,7 +1,7 @@
 "use server";
 import { connect } from "node:net";
 import { revalidatePath } from "next/cache";
-import { User, Order } from "./models";
+import { User, Order, Product } from "./models";
 import { connectToDb } from "./utils";
 import { signIn, signOut } from "./auth";
 import bcrypt from "bcryptjs";
@@ -28,25 +28,67 @@ export const NetworkPrint = async (data) => {
   });
 };
 
+//Products
+
+export const addProduct = async (prevState, formData) => {
+  const { name, price, category, description, image } =
+    Object.fromEntries(formData);
+
+  try {
+    connectToDb();
+    const newProduct = new Product({
+      name,
+      price,
+      category,
+      description,
+      image,
+    });
+
+    await newProduct.save();
+    console.log("saved to db");
+    revalidatePath("/menu");
+    revalidatePath("/admin");
+    revalidatePath("/admin/products");
+    return { success: "Added!" };
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong!" };
+  }
+};
+export const deleteProductByID = async (productID) => {
+  try {
+    await Product.findByIdAndDelete(productID);
+    revalidatePath("/orders");
+    revalidatePath("/admin");
+    revalidatePath("/admin/products");
+
+    return { success: true };
+  } catch (err) {
+    console.error("Error deleting order:", err);
+    return { error: "Failed to delete order." };
+  }
+};
+
+// Orders
 export const addOrder = async (prevState, formData) => {
-  const { products, totalAmount, paymentMethod, userId } =
+  const { products, totalAmount, paymentMethod, userId, username } =
     Object.fromEntries(formData);
 
   try {
     connectToDb();
 
-    // Retrieve the username from the User model
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
+    // // Retrieve the username from the User model
+    // const user = await User.findById(userId);
+    // if (!user) {
+    //   throw new Error("User not found");
+    // }
     const parsedCart = JSON.parse(products);
     const formattedCart = convertCartToArray(parsedCart);
 
     // Create a new order
     const newOrder = new Order({
       userId,
-      username: user.username, // Include the username
+      username, //user.username,
       totalAmount: parseFloat(totalAmount),
       paymentMethod,
       products: formattedCart, // Convert cart from JSON string to Map

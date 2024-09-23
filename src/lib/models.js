@@ -50,8 +50,7 @@ export const Product =
 const orderSchema = new mongoose.Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
     username: {
@@ -82,7 +81,9 @@ const orderSchema = new mongoose.Schema(
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
         total: { type: Number, required: true },
+        _id: false,
       },
+      { _id: false },
     ],
   },
   { timestamps: true }

@@ -1,5 +1,5 @@
-import { Order, User } from "./models";
-import { connectToDb } from "./utils";
+import { Order, Product, User } from "@/lib/models";
+import { connectToDb } from "@/lib/utils";
 import { unstable_noStore as noStore } from "next/cache";
 
 export const getOrdersByUsername = async (username) => {
@@ -30,6 +30,18 @@ export const getOrder = async (slug) => {
   } catch (err) {
     console.log(err);
     throw new Error("Failed to fetch order!");
+  }
+};
+
+export const fetchProducts = async () => {
+  try {
+    connectToDb();
+    const products = await Product.find();
+
+    return JSON.parse(JSON.stringify(products));
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch orders!");
   }
 };
 

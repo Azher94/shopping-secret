@@ -1,20 +1,23 @@
 "use client";
 import { useState } from "react";
-import { PRODUCTS as productData } from "@/lib/helpers/contants";
 import MenuCard from "@/components/menuPage/MenuCard";
 import Basket from "@/components/menuPage/Basket";
 import Filter from "@/components/menuPage/Filter";
 import { FaShoppingCart } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import { useSession } from "next-auth/react";
 
 // Pagination settings
 const ITEMS_PER_PAGE = 3;
 
-export default function Menu() {
+export default function MenuPage({ productData }) {
   const [cart, setCart] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [cartVisible, setCartVisible] = useState(false);
+  const session = useSession();
+  const username = session?.data?.user?.username;
+  const userID = session?.data?.user?.id;
 
   // Add product to cart
   const addToCart = (productName) => {
@@ -104,7 +107,7 @@ export default function Menu() {
       <div className="grid grid-rows-1  gap-6">
         {paginatedProducts.map((product) => (
           <MenuCard
-            key={product.name}
+            key={product._id}
             product={product}
             addToCart={addToCart}
             cartCount={cart[product.name] || 0}
@@ -140,7 +143,9 @@ export default function Menu() {
           addToCart={addToCart}
           removeFromCart={removeFromCart}
           deleteFromCart={deleteFromCart}
-          userId="1234" // Pass userId dynamically as needed
+          userID={userID}
+          username={username}
+          PRODUCTS={productData}
         />
       )}
       <button

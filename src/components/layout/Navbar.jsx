@@ -8,16 +8,30 @@ import LoadingSpinner from "./LoadSpinner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const session = useSession();
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const isAuthenticated = session.status === "authenticated";
-  const isLoading = session.status === "loading";
+  // useEffect to monitor session status changes
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      setIsAuthenticated(true);
+      setIsLoading(false);
+    } else if (session.status === "loading") {
+      setIsLoading(true);
+    } else {
+      setIsAuthenticated(false);
+      setIsLoading(false);
+    }
+  }, [session.status]); // Re-render when session status changes
+
   return (
-    <nav className="text-white bg-primary shadow-md backdrop-blur-lg  bg-opacity-80 fixed top-0 w-screen text-lg">
+    <nav className="text-white bg-primary shadow-md backdrop-blur-lg bg-opacity-80 fixed top-0 w-screen text-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
@@ -110,7 +124,7 @@ const Navbar = () => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a
             href="/"
-            className=" hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            className="hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Home
           </a>
