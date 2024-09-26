@@ -10,13 +10,13 @@ const TypeAnimations = () => {
       sequence={[
         "W",
         1000,
-        "Welcome to Classic Pizza",
+        "Welcome to Cheap",
         1000,
-        "Welcome to 3D Pizza",
+        "Welcome to Best",
         1000,
-        "Welcome to Stylish Menu",
+        "Welcome to Market",
         1000,
-        "Welcome to Exlusive Experience",
+        "Welcome to Al Ameer",
         1000,
       ]}
       wrapper="span"

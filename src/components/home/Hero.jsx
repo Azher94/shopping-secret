@@ -11,14 +11,11 @@ const Hero = () => {
       >
         <div className=" mx-2 ">
           <h1 className="text-5xl font-bold  bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent p-3 text-center">
-            3D POS Resturant
+            Al Ameer Supplier
           </h1>
           <TypeAnimations />
           <div className=" px-20 w-[30rem] mt-4 text-balance">
-            <p>
-              At 3D POS Resturant, we offer exlusive food services with a touch
-              of style and sophistication.
-            </p>
+            <p>At Al Ameer, ww provide wholesale for retails</p>
             <p>
               From classic pizza to modern potatoes, our experienced staff are
               dedicated to providing you with the best experience.
